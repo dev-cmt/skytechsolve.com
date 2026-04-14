@@ -19,6 +19,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\MissionController;
@@ -169,7 +170,14 @@ Route::middleware('auth')->group(function () {
     // contact
     Route::get('/contact', [ContactController::class, 'indexContact'])->name('contact.index');
     Route::get('/contact/{id}', [ContactController::class, 'showContact'])->name('contact.show');
+    Route::post('/contact/{id}/create-sale', [ContactController::class, 'createSaleFromContact'])->name('contact.create-sale');
     Route::delete('/contact/{id}', [ContactController::class, 'destroyContact'])->name('contact.destroy');
+
+    // sales
+    Route::get('/sales', [SalesController::class, 'index'])->name('sales.index');
+    Route::get('/sales/{id}', [SalesController::class, 'show'])->name('sales.show');
+    Route::post('/sales/{id}/update-status', [SalesController::class, 'updateStatus'])->name('sales.update-status');
+    Route::delete('/sales/{id}', [SalesController::class, 'destroy'])->name('sales.destroy');
 
     Route::get('/submissions', [ContactController::class, 'indexSubmissions'])->name('submissions.index');
 });

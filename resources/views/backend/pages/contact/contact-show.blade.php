@@ -49,6 +49,12 @@
                 <div class="card-footer">
                     <div class="float-end">
                         <a href="{{ route('contact.index') }}" class="btn btn-secondary-light">Back to List</a>
+                        @if(($contact->type ?? '') === 'sale')
+                            <form action="{{ route('contact.create-sale', $contact->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-success-light" onclick="return confirm('Create sale from this contact?')">Create Sale</button>
+                            </form>
+                        @endif
                         <form action="{{ route('contact.destroy', $contact->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')

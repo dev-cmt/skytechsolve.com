@@ -456,21 +456,109 @@
         }
         .success-overlay.is-visible .success-icon { transform: scale(1); }
 
-        /* Keep the purchase modal above theme overlays and fixed widgets */
-        .modal-backdrop,
-        .modal-backdrop.fade,
-        .modal-backdrop.show {
-            z-index: 100000 !important;
+        /* Custom Modal Styling */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1050;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        #purchaseModal,
-        #purchaseModal.show {
-            z-index: 100001 !important;
+        .custom-modal-overlay.show {
+            display: flex;
+            opacity: 1;
         }
 
-        #purchaseModal .modal-dialog,
-        #purchaseModal .modal-content {
-            z-index: 100002;
+        .custom-modal {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1060;
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .custom-modal-header {
+            background: #222;
+            color: #fff;
+            padding: 25px 30px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: none;
+        }
+
+        .custom-modal-header h5 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .custom-modal-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .custom-modal-close:hover {
+            opacity: 0.7;
+        }
+
+        .custom-modal-body {
+            padding: 35px 30px;
+        }
+
+        @media (max-width: 768px) {
+            .custom-modal {
+                width: 95%;
+                max-height: 85vh;
+            }
+            .custom-modal-header {
+                padding: 20px 20px;
+            }
+            .custom-modal-body {
+                padding: 25px 20px;
+            }
+            .custom-modal-header h5 {
+                font-size: 18px;
+            }
         }
 
         @media (max-width: 1199px) {
@@ -775,10 +863,10 @@
                                                     </ul>
 
                                                     <button type="button"
-                                                            class="theme-btn {{ $plan->is_popular ? 'btn-style-one' : 'btn-style-three' }} plan-btn"
-                                                            data-toggle="modal"
-                                                            data-target="#purchaseModal"
-                                                            data-plan="{{ $plan->name }}">
+                                                            class="theme-btn {{ $plan->is_popular ? 'btn-style-one' : 'btn-style-three' }} plan-btn open-purchase-modal"
+                                                            data-plan-id="{{ $plan->id }}"
+                                                            data-plan-name="{{ $plan->name }}"
+                                                            data-plan-price="{{ $plan->price }}">
                                                         Get Product
                                                     </button>
                                                 </div>
@@ -821,72 +909,68 @@
         </div>
     </div>
 
-    <!-- Purchase Enquiry Modal (Placed at Root Level for max compatibility) -->
-    <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+    <!-- Custom Purchase Enquiry Modal -->
+    <div class="custom-modal-overlay" id="purchaseModalOverlay">
+        <div class="custom-modal">
+            <!-- Success Message Overlay -->
+            <div class="success-overlay" id="successOverlay">
+                <div class="success-icon"><i class="bx bxs-check-circle"></i></div>
+                <h3 class="mb-3">Enquiry Sent!</h3>
+                <p class="text-muted mb-4" id="successMessage">Thank you for your interest. We'll be in touch very soon.</p>
+                <button type="button" class="theme-btn btn-style-one close-purchase-modal">Close</button>
+            </div>
 
-                <!-- Success Message Overlay -->
-                <div class="success-overlay" id="successOverlay">
-                    <div class="success-icon"><i class="bx bxs-check-circle"></i></div>
-                    <h3 class="mb-3">Enquiry Sent!</h3>
-                    <p class="text-muted mb-4" id="successMessage">Thank you for your interest. We'll be in touch very soon.</p>
-                    <button type="button" class="theme-btn btn-style-one" data-dismiss="modal">Close</button>
-                </div>
-
-                <div class="modal-header">
-                    <h5 class="modal-title" id="purchaseModalLabel">
-                        <i class="bx bx-shopping-bag me-2"></i> Purchase Enquiry: {{ $product->title }}
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="purchaseEnquiryForm" class="enquiry-form-premium" action="{{ route('page.products.purchase', $product->slug) }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="source" value="product_pricing_modal">
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="product_slug" value="{{ $product->slug }}">
-                        <input type="hidden" name="product_title" value="{{ $product->title }}">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label>Full Name *</label>
-                                <input type="text" name="name" class="form-control" placeholder="John Doe" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Phone Number</label>
-                                <input type="text" name="phone" class="form-control" placeholder="+1 234 567 890">
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Email Address *</label>
-                                <input type="email" name="email" class="form-control" placeholder="john@example.com" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Selected Plan</label>
-                                @if($hasPricePlans)
-                                    <select name="plan" id="modalPlanSelect" class="form-control">
-                                        <option value="">Choose a Plan</option>
-                                        @foreach($product->pricePlans as $plan)
-                                            <option value="{{ $plan->name }}">{{ $plan->name }}</option>
-                                        @endforeach
-                                    </select>
-                                @else
-                                    <input type="text" name="plan" value="{{ $product->title }}" class="form-control" readonly>
-                                @endif
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <label>Note</label>
-                                <textarea name="note" class="form-control" placeholder="Tell us about your specific needs..."></textarea>
-                            </div>
-                            <div class="col-md-12 text-center pt-3">
-                                <button type="submit" class="theme-btn btn-style-five w-100 py-3" id="submitBtn">
-                                    <span>Get Product</span>
-                                </button>
-                            </div>
+            <div class="custom-modal-header">
+                <h5>
+                    <i class="bx bx-shopping-bag"></i> Purchase Enquiry: {{ $product->title }}
+                </h5>
+                <button type="button" class="custom-modal-close close-purchase-modal" aria-label="Close">
+                    ×
+                </button>
+            </div>
+            <div class="custom-modal-body">
+                <form id="purchaseEnquiryForm" class="enquiry-form-premium" action="{{ route('page.products.purchase', $product->slug) }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="source" value="product_pricing_modal">
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="plan_id" id="modalPlanId" value="">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Full Name *</label>
+                            <input type="text" name="name" class="form-control" placeholder="John Doe" required>
                         </div>
-                    </form>
-                </div>
+                        <div class="col-md-6 form-group">
+                            <label>Phone Number</label>
+                            <input type="text" name="phone" class="form-control" placeholder="+1 234 567 890">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Email Address *</label>
+                            <input type="email" name="email" class="form-control" placeholder="john@example.com" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Selected Plan</label>
+                            @if($hasPricePlans)
+                                <select id="modalPlanSelect" class="form-control">
+                                    <option value="">Choose a Plan</option>
+                                    @foreach($product->pricePlans as $plan)
+                                        <option value="{{ $plan->id }}" data-plan-name="{{ $plan->name }}" data-plan-price="{{ $plan->price }}">{{ $plan->name }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <input type="text" value="{{ $product->title }}" class="form-control" readonly>
+                            @endif
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Note</label>
+                            <textarea name="note" class="form-control" placeholder="Tell us about your specific needs..."></textarea>
+                        </div>
+                        <div class="col-md-12 text-center pt-3">
+                            <button type="submit" class="theme-btn btn-style-five w-100 py-3" id="submitBtn">
+                                <span>Get Product</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -894,41 +978,75 @@
     @push('js')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Debug check for Bootstrap
-            if (typeof bootstrap === 'undefined') {
-                console.warn('Bootstrap JS is not loaded. Modal functionality might fail.');
-            }
-
-            const purchaseModal = document.getElementById('purchaseModal');
+            const modalOverlay = document.getElementById('purchaseModalOverlay');
             const planSelect = document.getElementById('modalPlanSelect');
+            const planIdInput = document.getElementById('modalPlanId');
             const enquiryForm = document.getElementById('purchaseEnquiryForm');
             const submitBtn = document.getElementById('submitBtn');
             const successOverlay = document.getElementById('successOverlay');
             const successMessage = document.getElementById('successMessage');
-            if (!purchaseModal) return;
 
-            // Ensure modal is attached to <body> so it is not trapped by parent stacking contexts.
-            if (purchaseModal.parentElement !== document.body) {
-                document.body.appendChild(purchaseModal);
-            }
+            if (!modalOverlay) return;
 
-            // Handle Modal Open - Population
-            purchaseModal.addEventListener('show.bs.modal', function (event) {
+            // Open modal
+            function openModal(planId = null, planName = null, planPrice = null) {
                 enquiryForm.reset();
                 enquiryForm.style.visibility = 'visible';
                 successOverlay.classList.remove('is-visible');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<span>Get Product</span>';
 
-                const button = event.relatedTarget;
-                const planName = button ? button.getAttribute('data-plan') : null;
+                if (planIdInput) planIdInput.value = planId || '';
+                if (planSelect && planId) planSelect.value = planId;
 
-                if (planSelect && planName) {
-                    planSelect.value = planName;
+                modalOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Close modal
+            function closeModal() {
+                modalOverlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            // Handle button clicks
+            document.querySelectorAll('.open-purchase-modal').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const planId = this.getAttribute('data-plan-id');
+                    const planName = this.getAttribute('data-plan-name');
+                    const planPrice = this.getAttribute('data-plan-price');
+                    openModal(planId, planName, planPrice);
+                });
+            });
+
+            // Close button clicks
+            document.querySelectorAll('.close-purchase-modal').forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
+
+            // Close on overlay click
+            modalOverlay.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeModal();
                 }
             });
 
-            // Handle AJAX Submission
+            // Close on Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('show')) {
+                    closeModal();
+                }
+            });
+
+            // Handle plan select change
+            if (planSelect) {
+                planSelect.addEventListener('change', function () {
+                    const selectedOption = this.options[this.selectedIndex];
+                    if (planIdInput) planIdInput.value = this.value || '';
+                });
+            }
+
+            // Handle form submission
             enquiryForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 

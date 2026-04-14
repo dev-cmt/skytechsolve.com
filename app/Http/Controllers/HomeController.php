@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Contact;
+use App\Models\Sale;
 use App\Models\Slider;
 use App\Models\Testimonial;
 use App\Models\Category;
@@ -662,35 +663,31 @@ class HomeController extends Controller implements HasMiddleware
             'name'    => 'required|string|max:255',
             'email'   => 'required|email|max:255',
             'phone'   => 'nullable|string|max:30',
-            'plan'    => 'nullable|string|max:255',
+            'plan_id' => 'nullable|integer',
             'note'    => 'nullable|string|max:2000',
             'source'  => 'nullable|string|max:100',
-            'product_id' => 'nullable|integer',
-            'product_slug' => 'nullable|string|max:255',
-            'product_title' => 'nullable|string|max:255',
         ]);
 
-        $planPart = $validated['plan'] ? ' — Plan: ' . $validated['plan'] : '';
-        $phonePart = $validated['phone'] ? ' | Phone: ' . $validated['phone'] : '';
+        $selectedPlan = null;
+        if (!empty($validated['plan_id'])) {
+            $selectedPlan = $product->pricePlans()->whereKey($validated['plan_id'])->first();
+        }
 
-        $noteText = $validated['note'] ?? 'No note provided.';
-        $metaLines = [
-            'Product ID: ' . ($validated['product_id'] ?? $product->id),
-            'Product Slug: ' . ($validated['product_slug'] ?? $product->slug),
-            'Product Title: ' . ($validated['product_title'] ?? $product->title),
-            'Selected Plan: ' . ($validated['plan'] ?? 'N/A'),
-            'Source: ' . ($validated['source'] ?? 'product_page'),
-        ];
+        $planName = $selectedPlan?->name ?? null;
+        $planId = $selectedPlan?->id ?? null;
+        $planPart = $planName ? ' — Plan: ' . $planName : '';
 
-        $finalMessage = $noteText . ($phonePart ? PHP_EOL . ltrim($phonePart, ' |') : '') . PHP_EOL . PHP_EOL . implode(PHP_EOL, $metaLines);
-
-        Contact::create([
-            'type'    => 'sale',
-            'name'    => $validated['name'],
-            'email'   => $validated['email'],
-            'phone'   => $validated['phone'] ?? null,
+        Sale::create([
+            'product_id' => $product->id,
+            'plan_id' => $planId,
+            'source' => $validated['source'] ?? 'product_page',
+            'customer_ip' => $request->ip(),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
             'subject' => 'Purchase Enquiry: ' . $product->title . $planPart,
-            'message' => $finalMessage,
+            'message' => $validated['note'] ?? null,
+            'status' => 'new',
         ]);
 
         if ($request->ajax()) {

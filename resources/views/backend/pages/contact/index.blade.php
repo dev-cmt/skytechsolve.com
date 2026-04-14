@@ -45,6 +45,12 @@
                                     <td>{{ $contact->created_at->format('M d, Y') }}</td>
                                     <td>
                                         <a href="{{ route('contact.show', $contact->id) }}" class="btn btn-sm btn-info">View</a>
+                                        @if(($contact->type ?? '') === 'sale')
+                                            <form action="{{ route('contact.create-sale', $contact->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Create sale from this contact?')">Create Sale</button>
+                                            </form>
+                                        @endif
                                         <form action="{{ route('contact.destroy', $contact->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')

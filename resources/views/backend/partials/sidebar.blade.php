@@ -187,6 +187,15 @@
                     </li>
                 @endcan
 
+                <!-- Sales -->
+                <li class="slide">
+                    <a href="{{ route('sales.index') }}"
+                        class="side-menu__item {{ Request::is('sales*') ? 'active' : '' }}">
+                        <i class="bx bx-credit-card side-menu__icon"></i>
+                        <span class="side-menu__label">Sales</span>
+                    </a>
+                </li>
+
                 <!-- Submissions -->
                 @can('view submissions')
                     <li class="slide">

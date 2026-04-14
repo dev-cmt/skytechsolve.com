@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Submission;
 use App\Models\Contact;
-use App\Models\User;
+use App\Models\Sale;
+
 class ContactController extends Controller
 {
 
@@ -32,6 +33,31 @@ class ContactController extends Controller
         $contact->delete();
 
         return redirect()->route('contact.index')->with('success', 'Contact deleted successfully.');
+    }
+
+    public function createSaleFromContact($id)
+    {
+        $contact = Contact::findOrFail($id);
+
+        if (($contact->type ?? '') !== 'sale') {
+            return redirect()->back()->with('error', 'Sale can only be created from sale contacts.');
+        }
+
+        if (Sale::where('contact_id', $contact->id)->exists()) {
+            return redirect()->back()->with('warning', 'A sale record already exists for this contact.');
+        }
+
+        Sale::create([
+            'contact_id' => $contact->id,
+            'name' => $contact->name,
+            'email' => $contact->email,
+            'phone' => $contact->phone,
+            'subject' => $contact->subject,
+            'message' => $contact->message,
+            'status' => 'new',
+        ]);
+
+        return redirect()->back()->with('success', 'Sale record created successfully.');
     }
 
     /*
