@@ -19,8 +19,8 @@ class ContactController extends Controller
     {
         $contact = Contact::findOrFail($id);
         // Mark as read
-        if ($contact->status == 'unread') {
-            $contact->update(['status' => 'read']);
+        if (!$contact->is_seen) {
+            $contact->update(['is_seen' => true]);
         }
 
         return view('backend.pages.contact.contact-show', compact('contact'));
@@ -43,8 +43,8 @@ class ContactController extends Controller
     public function indexSubmissions()
     {
         $submissions = Submission::latest()->paginate(10);
-        return view('backend.pages.contact.submissions', compact('submissions'));
+        return view('backend.pages.contact.subscribers', compact('submissions'));
     }
 
-    
+
 }

@@ -11,11 +11,11 @@
 2. Reset
 3. Global
 4. Main Header / Style two / Style three / Style Four
-5. Side Nav Bar 
+5. Side Nav Bar
 6. Hidden Sidebar
 7. Banner Section / Two / Three
 8. Page Title
-9. Section Title
+9. Section Titlemain-menu
 10. About Section
 11. Services Section
 12. Service Detail
@@ -23,7 +23,7 @@
 14. Process Section
 15. Fun Fact Section
 16. Fun Fact And Features
-17. Projects Section / Two 
+17. Projects Section / Two
 18. Product Details
 19. Offer Section
 20. Team Section
@@ -62,7 +62,7 @@
 @import url('jquery-ui.css');
 @import url('jquery.fancybox.min.css');
 
-/*** 
+/***
 
 ====================================================================
 		Reset
@@ -78,7 +78,7 @@
 	font-size: 100%;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Global Settings
@@ -493,7 +493,7 @@ img {
 	height: auto;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Scroll To Top style
@@ -528,7 +528,7 @@ img {
 	color: #222222;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Main Header style
@@ -746,7 +746,7 @@ img {
 	position: absolute;
 	left: 0px;
 	top: 110%;
-	width: 200px;
+	width: 245px;
 	padding: 0px 0px;
 	z-index: 100;
 	background: rgba(47, 46, 50, .90);
@@ -1529,7 +1529,7 @@ img {
 	color: #ED5933;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Header Style Six
@@ -1707,7 +1707,7 @@ img {
 }
 
 
-/*** 
+/***
 
 ====================================================================
 	Header Style Seven
@@ -1773,7 +1773,7 @@ img {
 	padding: 0 15px;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Side Nav Bar
@@ -2268,7 +2268,7 @@ header-style-seven .nav-toggler:hover {
 	color: #ffffff;
 }
 
-/*** 
+/***
 
 ====================================================================
 				Sticky Header
@@ -2488,7 +2488,7 @@ header-style-seven .nav-toggler:hover {
 	background: #222222;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Banner Section
@@ -2741,7 +2741,7 @@ header-style-seven .nav-toggler:hover {
 
 
 
-/*** 
+/***
 
 ====================================================================
 		Banner Section Two
@@ -2921,7 +2921,7 @@ header-style-seven .nav-toggler:hover {
 	margin-bottom: 25px;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Banner Section Three
@@ -3341,7 +3341,7 @@ header-style-seven .nav-toggler:hover {
 
 
 
-/*** 
+/***
 
 ====================================================================
 			Banner Section Four
@@ -3529,7 +3529,7 @@ header-style-seven .nav-toggler:hover {
 	box-shadow: rgba(34, 34, 34, 1) 0 0px 0px 40px inset;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Banner Section Five
@@ -3739,7 +3739,7 @@ header-style-seven .nav-toggler:hover {
 }
 
 
-/*** 
+/***
 
 ====================================================================
 		Banner Section Six
@@ -4122,7 +4122,7 @@ header-style-seven .nav-toggler:hover {
 
 
 
-/*** 
+/***
 
 ====================================================================
 			Page Title
@@ -4222,7 +4222,7 @@ header-style-seven .nav-toggler:hover {
 	color: #ED5933;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Section Title
@@ -4273,7 +4273,7 @@ header-style-seven .nav-toggler:hover {
 	margin: 0 auto;
 }
 
-/*** 
+/***
 
 ====================================================================
 			About Section
@@ -4411,7 +4411,7 @@ header-style-seven .nav-toggler:hover {
 	font-weight: 700;
 }
 
-/*** 
+/***
 
 ====================================================================
 			Services Section
@@ -4609,7 +4609,7 @@ header-style-seven .nav-toggler:hover {
 	background-color: #ED5933;
 }
 
-/*** 
+/***
 
 ====================================================================
 			Service Detail
@@ -4779,7 +4779,7 @@ header-style-seven .nav-toggler:hover {
 	margin-top: 20px;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Product Tabs Style
@@ -4884,7 +4884,7 @@ header-style-seven .nav-toggler:hover {
 	margin-bottom: 0px;
 }
 
-/*** 
+/***
 
 ====================================================================
 			Specialize Section
@@ -5029,7 +5029,7 @@ header-style-seven .nav-toggler:hover {
 	background-color: #ED5933;
 }
 
-/*** 
+/***
 
 ====================================================================
 			Specialize Section Two
@@ -5287,7 +5287,7 @@ header-style-seven .nav-toggler:hover {
 	padding-right: 40px;
 }
 
-/*** 
+/***
 
 ====================================================================
 			Process Section
@@ -6026,7 +6026,7 @@ header-style-seven .nav-toggler:hover {
 	margin-top: 50px;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Projects Section Two
@@ -6266,7 +6266,7 @@ header-style-seven .nav-toggler:hover {
 	top: 0;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Product Detail
@@ -6474,7 +6474,7 @@ header-style-seven .nav-toggler:hover {
 	color: #ffffff;
 }
 
-/*** 
+/***
 
 ====================================================================
 			Styled Pagination
@@ -6537,7 +6537,7 @@ header-style-seven .nav-toggler:hover {
 	border-color: #ED5933;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Offer Section
@@ -6683,7 +6683,7 @@ header-style-seven .nav-toggler:hover {
 	line-height: 30px;
 }
 
-/*** 
+/***
 
 ====================================================================
 			Team Section
@@ -6863,7 +6863,7 @@ header-style-seven .nav-toggler:hover {
 	font-weight: 500;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Testimonial Section
@@ -7063,7 +7063,7 @@ header-style-seven .nav-toggler:hover {
 	color: #ED5933;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Testimonial Section Two
@@ -7232,7 +7232,7 @@ header-style-seven .nav-toggler:hover {
 	margin-right: 5px;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Products Section
@@ -7572,7 +7572,7 @@ header-style-seven .nav-toggler:hover {
 	content: "";
 }
 
-/*** 
+/***
 
 ====================================================================
 			FAQ Section
@@ -7745,7 +7745,7 @@ header-style-seven .nav-toggler:hover {
 	color: #777777;
 }
 
-/*** 
+/***
 
 ====================================================================
 			FAQ Form Section
@@ -7812,7 +7812,7 @@ header-style-seven .nav-toggler:hover {
 	line-height: 20px;
 }
 
-/*** 
+/***
 
 ====================================================================
 		App Section
@@ -7910,7 +7910,7 @@ header-style-seven .nav-toggler:hover {
 	font-weight: 400;
 }
 
-/*** 
+/***
 
 ====================================================================
 				News Section
@@ -8685,7 +8685,7 @@ header-style-seven .nav-toggler:hover {
 	font-weight: 400;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Blog Section
@@ -8874,7 +8874,7 @@ header-style-seven .nav-toggler:hover {
 	transform: scale(1.2);
 }
 
-/*** 
+/***
 
 ====================================================================
 		Blog Detail
@@ -9049,7 +9049,7 @@ header-style-seven .nav-toggler:hover {
 	color: #ffffff;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Blog Detail Style Two
@@ -9997,7 +9997,7 @@ header-style-seven .nav-toggler:hover {
 	color: #ffffff;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Comment Area
@@ -10123,7 +10123,7 @@ header-style-seven .nav-toggler:hover {
 	color: #222222;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Comment Form
@@ -10181,7 +10181,7 @@ header-style-seven .nav-toggler:hover {
 	resize: none;
 }
 
-/*** 
+/***
 
 ====================================================================
 		Contact Page Section
@@ -10292,7 +10292,7 @@ header-style-seven .nav-toggler:hover {
 	height: 100%;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Services Sidebar
@@ -10497,7 +10497,7 @@ header-style-seven .nav-toggler:hover {
 	color: #ffffff;
 }
 
-/*** 
+/***
 
 ====================================================================
 			Coming Soon
@@ -11201,7 +11201,7 @@ header-style-seven .nav-toggler:hover {
 	margin-left: 20px;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Product Tabs Style
@@ -11425,7 +11425,7 @@ header-style-seven .nav-toggler:hover {
 	border-color: #f06529;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Cart Section style
@@ -12287,7 +12287,7 @@ header-style-seven .nav-toggler:hover {
 	margin-right: 0;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Login Section
@@ -12400,7 +12400,7 @@ header-style-seven .nav-toggler:hover {
 	text-decoration: underline;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Error Section
@@ -13131,7 +13131,7 @@ header-style-seven .nav-toggler:hover {
 	float: right;
 }
 
-/*** 
+/***
 
 ====================================================================
 	Box Layout

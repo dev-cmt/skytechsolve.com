@@ -106,9 +106,9 @@
 
                         <div class="mb-3">
                             <label for="image" class="form-label">Featured Image</label>
-                            @if($blog->main_image)
-                                <div class="mb-2">
-                                    <img src="{{ asset($blog->main_image->path) }}" alt="Current image" class="img-thumbnail" style="max-height: 90px;">
+                            <div id="existing-featured-image-wrap" class="mb-2 {{ $blog->main_image ? '' : 'd-none' }}">
+                                <div class="border rounded-2 p-2 bg-light">
+                                    <img id="existing-featured-image" src="{{ $blog->main_image ? asset($blog->main_image->path) : '' }}" alt="Current featured image" class="img-fluid rounded" style="max-height: 180px; object-fit: cover; width: 100%;">
                                     <div class="form-check mt-2">
                                         <input class="form-check-input" type="checkbox" id="remove_image" name="remove_image" value="1">
                                         <label class="form-check-label" for="remove_image">
@@ -116,8 +116,17 @@
                                         </label>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
                             <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+                            <div id="featured-image-preview-wrap" class="mt-2 d-none">
+                                <div class="border rounded-2 p-2 bg-light">
+                                    <img id="featured-image-preview" src="" alt="New featured image preview" class="img-fluid rounded" style="max-height: 180px; object-fit: cover; width: 100%;">
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <small id="featured-image-name" class="text-muted text-truncate" style="max-width: 80%;"></small>
+                                        <button type="button" id="featured-image-clear" class="btn btn-sm btn-outline-danger">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
                             @error('image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -194,6 +203,58 @@
 
                 // Add event listener
                 statusSelect.addEventListener('change', togglePublishDateField);
+
+                const imageInput = document.getElementById('image');
+                const previewWrap = document.getElementById('featured-image-preview-wrap');
+                const preview = document.getElementById('featured-image-preview');
+                const previewName = document.getElementById('featured-image-name');
+                const clearBtn = document.getElementById('featured-image-clear');
+                const removeCurrentCheckbox = document.getElementById('remove_image');
+                const existingImageWrap = document.getElementById('existing-featured-image-wrap');
+
+                imageInput.addEventListener('change', function(event) {
+                    const file = event.target.files && event.target.files[0];
+
+                    if (!file) {
+                        previewWrap.classList.add('d-none');
+                        preview.removeAttribute('src');
+                        previewName.textContent = '';
+                        return;
+                    }
+
+                    if (!file.type.startsWith('image/')) {
+                        imageInput.value = '';
+                        previewWrap.classList.add('d-none');
+                        preview.removeAttribute('src');
+                        previewName.textContent = '';
+                        return;
+                    }
+
+                    preview.src = URL.createObjectURL(file);
+                    previewName.textContent = file.name;
+                    previewWrap.classList.remove('d-none');
+
+                    if (removeCurrentCheckbox) {
+                        removeCurrentCheckbox.checked = false;
+                    }
+                });
+
+                clearBtn.addEventListener('click', function() {
+                    imageInput.value = '';
+                    previewWrap.classList.add('d-none');
+                    preview.removeAttribute('src');
+                    previewName.textContent = '';
+                });
+
+                if (removeCurrentCheckbox && existingImageWrap) {
+                    removeCurrentCheckbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            existingImageWrap.classList.add('opacity-50');
+                        } else {
+                            existingImageWrap.classList.remove('opacity-50');
+                        }
+                    });
+                }
             });
         </script>
 

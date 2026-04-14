@@ -7,6 +7,13 @@
                        PRODUCTS PAGE – PREMIUM DESIGN
                     ============================================= */
 
+            :root {
+                --products-accent: #ed5933;
+                --products-accent-dark: #a02000;
+                --products-accent-soft: #ffe8e0;
+                --products-text-strong: #1f1f1f;
+            }
+
             /* Page Title Override */
             .page-title {
                 position: relative;
@@ -666,6 +673,89 @@
                 .pricing-header h2 {
                     font-size: 26px;
                 }
+            }
+
+            /* Theme alignment overrides for existing UI blocks */
+            .filter-btn:hover,
+            .filter-btn.active {
+                background: var(--products-accent);
+                border-color: var(--products-accent);
+                box-shadow: 0 4px 15px rgba(237, 89, 51, 0.32);
+            }
+
+            .products-section {
+                background: linear-gradient(180deg, #fff9f7 0%, #ffffff 100%);
+            }
+
+            .sec-title-pill {
+                background: var(--products-accent-soft);
+                color: var(--products-accent);
+            }
+
+            .products-section .sec-title h2,
+            .pricing-header h2,
+            .product-card__title {
+                color: var(--products-text-strong);
+            }
+
+            .product-card {
+                border: 1px solid #f9d6cc;
+            }
+
+            .product-card:hover {
+                box-shadow: 0 18px 45px rgba(237, 89, 51, 0.16);
+                border-color: #f2b8a8;
+            }
+
+            .product-card__badge,
+            .btn-buy,
+            .products-cta-banner .btn-cta:hover,
+            .cta-popular {
+                background: linear-gradient(135deg, var(--products-accent), var(--products-accent-dark));
+            }
+
+            .product-card__plans-badge,
+            .product-card__price-tag,
+            .pricing-header .back-link,
+            .pricing-card__name,
+            .btn-detail {
+                color: var(--products-accent);
+            }
+
+            .btn-detail,
+            .cta-default {
+                border-color: var(--products-accent);
+            }
+
+            .btn-detail:hover,
+            .cta-default:hover {
+                background: var(--products-accent);
+                border-color: var(--products-accent);
+                box-shadow: 0 6px 18px rgba(237, 89, 51, 0.28);
+            }
+
+            .pricing-section::before {
+                background: linear-gradient(90deg, var(--products-accent), #f38f74, var(--products-accent));
+            }
+
+            .pricing-card {
+                border-color: #f9d6cc;
+            }
+
+            .pricing-card:hover {
+                box-shadow: 0 16px 40px rgba(237, 89, 51, 0.14);
+                border-color: #f2b8a8;
+            }
+
+            .pricing-card.is-popular,
+            .products-cta-banner {
+                background: linear-gradient(140deg, #2a1a15 0%, #6f2a1a 55%, var(--products-accent) 100%);
+                border-color: #6f2a1a;
+            }
+
+            .pricing-card__features li .feat-icon {
+                background: var(--products-accent-soft);
+                color: var(--products-accent);
             }
         </style>
     @endpush

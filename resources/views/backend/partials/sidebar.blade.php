@@ -220,7 +220,7 @@
                                 <li class="slide">
                                     <a href="{{ route('tags.index') }}"
                                         class="side-menu__item {{ Request::is('tags*') ? 'active' : '' }}">
-                                        Tags
+                                        Tags List
                                     </a>
                                 </li>
                             @endcan

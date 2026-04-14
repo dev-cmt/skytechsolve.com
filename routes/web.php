@@ -53,7 +53,7 @@ Route::get('services-details/{slug}', [HomeController::class, 'servicesDetails']
 Route::get('projects-list', [HomeController::class, 'projects'])->name('page.projects');
 Route::get('projects-details/{slug}', [HomeController::class, 'projectsDetails'])->name('page.projects-details');
 
-Route::get('projects-video', [HomeController::class, 'projectsVideo'])->name('page.projects-video');
+Route::get('videos', [HomeController::class, 'projectsVideo'])->name('page.videos');
 //______________ PRODUCTS
 Route::get('products-list', [HomeController::class, 'products'])->name('page.products');
 Route::get('products-details/{slug}', [HomeController::class, 'productsDetails'])->name('page.products-details');

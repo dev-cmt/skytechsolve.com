@@ -1,15 +1,15 @@
-<x-frontend-layout title="Project Video" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
+<x-frontend-layout title="Project Videos" :breadcrumbs="$breadcrumbs" :seotags="$seotags">
     <!--Page Title-->
     <section class="page-title" style="background-image:url({{asset('frontend/images/pages/bg-title.jpg')}});">
         <div class="auto-container">
             <div class="inner-container clearfix">
                 <div class="title-box">
-                    <h1>{{ data_get($page->content, 'header.title', 'Project Video') }}</h1>
+                    <h1>{{ data_get($page->content, 'header.title', 'Project Videos') }}</h1>
                     <span class="title">{{ data_get($page->content, 'header.subtitle', 'The Interior speak for themselves') }}</span>
                 </div>
                 <ul class="bread-crumb clearfix">
                     <li><a href="{{ url('/') }}">Home</a></li>
-                    <li>Project Video</li>
+                    <li>Project Videos</li>
                 </ul>
             </div>
         </div>

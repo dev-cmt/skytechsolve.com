@@ -12,7 +12,9 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Type</th>
                                     <th>Name</th>
+                                    <th>Phone</th>
                                     <th>Email</th>
                                     <th>Subject</th>
                                     <th>Status</th>
@@ -24,12 +26,20 @@
                                 @foreach($contacts as $contact)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        @if(($contact->type ?? '') === 'sale')
+                                            <span class="badge bg-success">Sale</span>
+                                        @else
+                                            <span class="badge bg-secondary">Contact</span>
+                                        @endif
+                                    </td>
                                     <td>{{ $contact->name }}</td>
+                                    <td>{{ $contact->phone ?? '-' }}</td>
                                     <td>{{ $contact->email }}</td>
                                     <td>{{ Str::limit($contact->subject, 30) }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $contact->status == 'unread' ? 'warning' : ($contact->status == 'read' ? 'info' : 'success') }}">
-                                            {{ ucfirst($contact->status) }}
+                                        <span class="badge bg-{{ $contact->is_seen ? 'info' : 'warning' }}">
+                                            {{ $contact->is_seen ? 'Read' : 'Unread' }}
                                         </span>
                                     </td>
                                     <td>{{ $contact->created_at->format('M d, Y') }}</td>

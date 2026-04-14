@@ -196,7 +196,15 @@ class HomeController extends Controller implements HasMiddleware
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        Contact::create($request->all());
+        Contact::create([
+            'type' => 'contact',
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'is_seen' => false,
+        ]);
 
         return redirect()->back()->with('success', 'Your message has been sent successfully!');
     }
@@ -587,7 +595,7 @@ class HomeController extends Controller implements HasMiddleware
 
         // SEO
         $page = Page::with('seo')->where('slug', 'products')->first();
-        
+
         // If products page doesn't exist in pages table, create a fallback or skip SEO
         if($page) {
             $this->setSeo([
@@ -598,7 +606,7 @@ class HomeController extends Controller implements HasMiddleware
                 'canonical' => url()->current(),
             ]);
         }
-        
+
         $seotags = $this->generateTags();
 
         $breadcrumbs = $this->generateBreadcrumbJsonLd([
@@ -655,17 +663,34 @@ class HomeController extends Controller implements HasMiddleware
             'email'   => 'required|email|max:255',
             'phone'   => 'nullable|string|max:30',
             'plan'    => 'nullable|string|max:255',
-            'message' => 'nullable|string|max:2000',
+            'note'    => 'nullable|string|max:2000',
+            'source'  => 'nullable|string|max:100',
+            'product_id' => 'nullable|integer',
+            'product_slug' => 'nullable|string|max:255',
+            'product_title' => 'nullable|string|max:255',
         ]);
 
         $planPart = $validated['plan'] ? ' — Plan: ' . $validated['plan'] : '';
         $phonePart = $validated['phone'] ? ' | Phone: ' . $validated['phone'] : '';
 
+        $noteText = $validated['note'] ?? 'No note provided.';
+        $metaLines = [
+            'Product ID: ' . ($validated['product_id'] ?? $product->id),
+            'Product Slug: ' . ($validated['product_slug'] ?? $product->slug),
+            'Product Title: ' . ($validated['product_title'] ?? $product->title),
+            'Selected Plan: ' . ($validated['plan'] ?? 'N/A'),
+            'Source: ' . ($validated['source'] ?? 'product_page'),
+        ];
+
+        $finalMessage = $noteText . ($phonePart ? PHP_EOL . ltrim($phonePart, ' |') : '') . PHP_EOL . PHP_EOL . implode(PHP_EOL, $metaLines);
+
         Contact::create([
+            'type'    => 'sale',
             'name'    => $validated['name'],
             'email'   => $validated['email'],
+            'phone'   => $validated['phone'] ?? null,
             'subject' => 'Purchase Enquiry: ' . $product->title . $planPart,
-            'message' => ($validated['message'] ?? 'No message provided.') . $phonePart,
+            'message' => $finalMessage,
         ]);
 
         if ($request->ajax()) {

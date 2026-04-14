@@ -158,6 +158,23 @@
                 font-size: 10px;
                 font-weight: 700;
             }
+
+            .feature-row {
+                display: grid;
+                grid-template-columns: 140px 1fr 36px;
+                gap: 10px;
+                margin-bottom: 10px;
+                align-items: center;
+            }
+
+            .feature-row:last-child {
+                margin-bottom: 0;
+            }
+
+            .feature-status {
+                font-size: 12px;
+                font-weight: 600;
+            }
         </style>
         </style>
     @endpush
@@ -254,9 +271,14 @@
                                             value="{{ $plan->duration }}" class="form-control" placeholder="Month">
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="form-label fs-12 fw-bold text-uppercase opacity-75">Features (One per line)</label>
-                                        <textarea name="plans[{{ $index }}][features]" class="form-control"
-                                            rows="3">{{ $plan->features }}</textarea>
+                                        <label class="form-label fs-12 fw-bold text-uppercase opacity-75">Plan Features</label>
+                                        <div class="border rounded p-2 bg-light-subtle">
+                                            <div class="feature-rows"></div>
+                                            <button type="button" class="btn btn-sm btn-outline-primary mt-2 add-feature-row">
+                                                <i class="ri-add-line me-1"></i>Add Feature
+                                            </button>
+                                        </div>
+                                        <textarea name="plans[{{ $index }}][features]" class="d-none plan-features-input">{{ $plan->features }}</textarea>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-check form-switch mt-2">
@@ -398,8 +420,14 @@
                         placeholder="Month">
                 </div>
                 <div class="col-md-12">
-                    <label class="form-label fs-12 fw-bold text-uppercase opacity-75">Features (One per line)</label>
-                    <textarea name="plans[INDEX][features]" class="form-control" rows="3"></textarea>
+                    <label class="form-label fs-12 fw-bold text-uppercase opacity-75">Plan Features</label>
+                    <div class="border rounded p-2 bg-light-subtle">
+                        <div class="feature-rows"></div>
+                        <button type="button" class="btn btn-sm btn-outline-primary mt-2 add-feature-row">
+                            <i class="ri-add-line me-1"></i>Add Feature
+                        </button>
+                    </div>
+                    <textarea name="plans[INDEX][features]" class="d-none plan-features-input"></textarea>
                 </div>
                 <div class="col-md-4">
                     <div class="form-check form-switch mt-2">
@@ -431,6 +459,86 @@
                 let planIndex = {{ $product->pricePlans->count() }};
                 const $container = $('#plans-container');
 
+                function parsePlanFeatures(raw = '') {
+                    return String(raw)
+                        .split(/\r?\n/)
+                        .map(line => line.trim())
+                        .filter(Boolean)
+                        .map(line => {
+                            let included = true;
+                            let text = line;
+
+                            if (/^\[\s*\]\s*/.test(line)) {
+                                included = false;
+                                text = line.replace(/^\[\s*\]\s*/, '').trim();
+                            } else if (/^\[(x|X)\]\s*/.test(line)) {
+                                included = true;
+                                text = line.replace(/^\[(x|X)\]\s*/, '').trim();
+                            } else if (/^-\s+/.test(line)) {
+                                included = false;
+                                text = line.replace(/^-\s+/, '').trim();
+                            } else if (/^\+\s+/.test(line)) {
+                                included = true;
+                                text = line.replace(/^\+\s+/, '').trim();
+                            }
+
+                            return { included, text };
+                        });
+                }
+
+                function featureRowHtml(feature = { included: true, text: '' }) {
+                    return `
+                        <div class="feature-row">
+                            <select class="form-select form-select-sm feature-status">
+                                <option value="1" ${feature.included ? 'selected' : ''}>Checked</option>
+                                <option value="0" ${!feature.included ? 'selected' : ''}>Unchecked</option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm feature-text" value="${$('<div>').text(feature.text).html()}" placeholder="Feature text">
+                            <button type="button" class="btn btn-sm btn-outline-danger remove-feature-row" title="Remove">
+                                <i class="ri-close-line"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                function syncPlanFeatures($planCard) {
+                    const lines = [];
+                    $planCard.find('.feature-row').each(function() {
+                        const included = $(this).find('.feature-status').val() === '1';
+                        const text = ($(this).find('.feature-text').val() || '').trim();
+                        if (!text) return;
+                        lines.push(`${included ? '[x]' : '[ ]'} ${text}`);
+                    });
+                    $planCard.find('.plan-features-input').val(lines.join("\n"));
+                }
+
+                function ensureFeatureRows($planCard) {
+                    const $rows = $planCard.find('.feature-rows');
+                    if ($rows.find('.feature-row').length === 0) {
+                        $rows.append(featureRowHtml());
+                    }
+                    syncPlanFeatures($planCard);
+                }
+
+                function initPlanFeatures($planCard) {
+                    const raw = $planCard.find('.plan-features-input').val() || '';
+                    const items = parsePlanFeatures(raw);
+                    const $rows = $planCard.find('.feature-rows');
+                    $rows.empty();
+
+                    if (items.length) {
+                        items.forEach(item => $rows.append(featureRowHtml(item)));
+                    } else {
+                        $rows.append(featureRowHtml());
+                    }
+
+                    syncPlanFeatures($planCard);
+                }
+
+                $container.find('.plan-card').each(function () {
+                    initPlanFeatures($(this));
+                });
+
                 $(document).on('click', '#add-plan', function (e) {
                     e.preventDefault();
                     $('.empty-plans-message').hide();
@@ -445,8 +553,31 @@
                         let $html = $(html);
                         $html.find('.plan-num').text(planIndex + 1);
                         $container.append($html);
+                        initPlanFeatures($html);
                         planIndex++;
                     }
+                });
+
+                $(document).on('click', '.add-feature-row', function () {
+                    const $planCard = $(this).closest('.plan-card');
+                    $planCard.find('.feature-rows').append(featureRowHtml());
+                    syncPlanFeatures($planCard);
+                });
+
+                $(document).on('click', '.remove-feature-row', function () {
+                    const $planCard = $(this).closest('.plan-card');
+                    $(this).closest('.feature-row').remove();
+                    ensureFeatureRows($planCard);
+                });
+
+                $(document).on('input change', '.feature-text, .feature-status', function () {
+                    syncPlanFeatures($(this).closest('.plan-card'));
+                });
+
+                $('form').on('submit', function () {
+                    $container.find('.plan-card').each(function () {
+                        ensureFeatureRows($(this));
+                    });
                 });
 
                 $(document).on('click', '.remove-plan', function () {
@@ -480,7 +611,7 @@
                     const files = Array.from(this.files);
                     const $labelContainer = $(this).closest('.add-image-btn');
                     const $imgContainer = $('#images-container');
-                    
+
                     // Clear previous new image previews since file input is replaced
                     $imgContainer.find('.image-wrapper.new-preview').remove();
 

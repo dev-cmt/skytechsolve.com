@@ -1,25 +1,25 @@
 
 <!-- Main Header-->
 <header class="main-header header-style-one">
-    <section class="header-contact" style="">
+    <section class="header-top" style="">
         <p>
             Phone : <a href="tel:{{ $settings->phone ?? '+8801577298633' }}" class="animated-phone">{{ $settings->phone ?? '+880 1577-298633' }}</a>
         </p>
     </section>
     <style>
-        .header-contact{
+        .header-top{
             height: 40px;
         }
-        .header-contact p{
+        .header-top p{
             text-align: center; padding-top: 10px; font-weight: bold;
         }
-        .header-contact p {
+        .header-top p {
             color: #fff; font-weight: bold;
         }
-        .header-contact p a {
+        .header-top p a {
             color: #1f1f1f; font-weight: bold;
         }
-        .header-contact p a:hover {
+        .header-top p a:hover {
             color: #ffffff;
         }
 
@@ -225,7 +225,7 @@
                             </button>
                         </div>
                         @php
-                            $services = App\Models\Service::where('status', 1)->get();
+                            $services = App\Models\Service::where('status', true)->where('is_menu', true)->get();
                         @endphp
 
                         <div class="collapse navbar-collapse clearfix" id="navbarSupportedContent">
@@ -234,18 +234,18 @@
                                 <li class="{{ request()->is('about-us') ? 'current' : '' }}"><a href="{{route('page.about-us')}}">About</a></li>
                                 <li class="{{ request()->is('services*') ? 'current' : '' }} dropdown"><a href="#">Services</a>
                                     <ul>
-                                        <li><a href="{{route('page.services')}}">All Services</a></li>
                                         @foreach ($services as $service)
                                             <li><a href="{{route('page.services-details', $service->slug)}}">{{$service->title}}</a></li>
                                         @endforeach
-                                        <li><a href="{{route('page.projects-video')}}">Project Video</a></li>
+                                        <li><a href="{{route('page.services')}}">Other Services</a></li>
                                     </ul>
                                 </li>
                                 <li class="{{ request()->is('projects*') ? 'current' : '' }}"><a href="{{route('page.projects')}}">Projects</a></li>
                                 <li class="{{ request()->is('products*') ? 'current' : '' }}"><a href="{{route('page.products')}}">Products</a></li>
                                 <li class="{{ request()->is('teams*') ? 'current' : '' }}"><a href="{{route('page.teams')}}">Team</a></li>
+                                <li class="{{ request()->is('videos*') ? 'current' : '' }}"><a href="{{ route('page.videos') }}">Videos</a></li>
                                 <li class="{{ request()->is('blogs*') ? 'current' : '' }}"><a href="{{route('page.blogs')}}">Blog</a></li>
-                                <li class="{{ request()->is('contact-us') ? 'current' : '' }}"><a href="{{route('page.contact-us')}}">Contact</a></li>
+                                {{-- <li class="{{ request()->is('contact-us') ? 'current' : '' }}"><a href="{{route('page.contact-us')}}">Contact</a></li> --}}
                             </ul>
                         </div>
                     </nav><!-- Main Menu End-->

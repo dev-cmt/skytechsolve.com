@@ -113,6 +113,15 @@
                             <label for="image" class="form-label">Featured Image</label>
                             <input type="file" class="form-control @error('image') is-invalid @enderror"
                                     id="image" name="image" accept="image/*">
+                            <div id="featured-image-preview-wrap" class="mt-2 d-none">
+                                <div class="border rounded-2 p-2 bg-light">
+                                    <img id="featured-image-preview" src="" alt="Featured image preview" class="img-fluid rounded" style="max-height: 180px; object-fit: cover; width: 100%;">
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <small id="featured-image-name" class="text-muted text-truncate" style="max-width: 80%;"></small>
+                                        <button type="button" id="featured-image-clear" class="btn btn-sm btn-outline-danger">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
                             @error('image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -190,6 +199,42 @@
 
                 // Add event listener
                 statusSelect.addEventListener('change', togglePublishDateField);
+
+                const imageInput = document.getElementById('image');
+                const previewWrap = document.getElementById('featured-image-preview-wrap');
+                const preview = document.getElementById('featured-image-preview');
+                const previewName = document.getElementById('featured-image-name');
+                const clearBtn = document.getElementById('featured-image-clear');
+
+                imageInput.addEventListener('change', function(event) {
+                    const file = event.target.files && event.target.files[0];
+
+                    if (!file) {
+                        previewWrap.classList.add('d-none');
+                        preview.removeAttribute('src');
+                        previewName.textContent = '';
+                        return;
+                    }
+
+                    if (!file.type.startsWith('image/')) {
+                        imageInput.value = '';
+                        previewWrap.classList.add('d-none');
+                        preview.removeAttribute('src');
+                        previewName.textContent = '';
+                        return;
+                    }
+
+                    preview.src = URL.createObjectURL(file);
+                    previewName.textContent = file.name;
+                    previewWrap.classList.remove('d-none');
+                });
+
+                clearBtn.addEventListener('click', function() {
+                    imageInput.value = '';
+                    previewWrap.classList.add('d-none');
+                    preview.removeAttribute('src');
+                    previewName.textContent = '';
+                });
             });
         </script>
 

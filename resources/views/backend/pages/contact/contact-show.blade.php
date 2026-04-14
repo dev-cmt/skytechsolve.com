@@ -19,8 +19,8 @@
                         Message from {{ $contact->name }}
                     </div>
                     <div>
-                        <span class="badge bg-{{ $contact->status == 'unread' ? 'warning' : ($contact->status == 'read' ? 'info' : 'success') }}">
-                            {{ ucfirst($contact->status) }}
+                        <span class="badge bg-{{ $contact->is_seen ? 'info' : 'warning' }}">
+                            {{ $contact->is_seen ? 'Read' : 'Unread' }}
                         </span>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                     <hr>
                     <div class="mb-0">
                         <p class="fs-14 fw-semibold mb-1">Status</p>
-                        <p class="fs-12 text-muted mb-0">This message has been marked as <strong>{{ $contact->status }}</strong>.</p>
+                        <p class="fs-12 text-muted mb-0">This message has been marked as <strong>{{ $contact->is_seen ? 'read' : 'unread' }}</strong>.</p>
                     </div>
                 </div>
             </div>
