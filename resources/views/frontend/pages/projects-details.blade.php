@@ -34,7 +34,8 @@
                             <!-- Main Stage -->
                             <div class="gallery-main-stage mb-3">
                                 <img id="mainGalleryImage" src="{{ asset($project->media[0]->path) }}"
-                                    alt="Project Main Image">
+                                    alt="Project Main Image" class="d-block h-100"
+                                    style="height: 100%; width: auto; max-width: none; display: block; margin: 0 auto;">
 
                                 <button class="gallery-zoom-btn" id="galleryZoomBtn" title="View Full Screen"><i
                                         class="fa fa-expand"></i></button>
@@ -187,7 +188,8 @@
                 height: 100%;
                 object-fit: cover;
                 object-position: center;
-                transition: opacity .4s ease-in-out
+                transition: opacity .4s ease-in-out;
+                cursor: zoom-in;
             }
 
             .gallery-main-stage img.fade-out {
@@ -243,7 +245,19 @@
                 z-index: 10;
                 display: flex;
                 align-items: center;
-                justify-content: center
+                justify-content: center;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transform: translateY(8px);
+            }
+
+            .gallery-main-stage:hover .gallery-zoom-btn,
+            .gallery-main-stage:focus-within .gallery-zoom-btn {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateY(0);
             }
 
             .gallery-zoom-btn:hover {
@@ -464,6 +478,12 @@
                         }
                     });
                 }
+
+                mainImage.addEventListener("click", () => {
+                    if (hiddenLinks[currentIndex]) {
+                        hiddenLinks[currentIndex].click();
+                    }
+                });
             });
         </script>
     @endpush

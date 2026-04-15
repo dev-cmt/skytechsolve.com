@@ -5708,6 +5708,14 @@ header-style-seven .nav-toggler:hover {
 
 .project-block .image-box {
 	position: relative;
+	overflow: hidden;
+	background: #111;
+	box-shadow: 0 18px 40px rgba(0, 0, 0, .28), 0 6px 14px rgba(0, 0, 0, .18);
+	isolation: isolate;
+}
+
+.project-block .image-box:before {
+	content: none;
 }
 
 .project-block .image-box .image {
@@ -5720,6 +5728,7 @@ header-style-seven .nav-toggler:hover {
 	width: 100%;
 	height: auto;
 }
+
 
 .project-block .overlay-box {
 	position: absolute;

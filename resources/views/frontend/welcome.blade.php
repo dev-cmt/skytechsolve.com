@@ -354,8 +354,8 @@
                                 </div>
                                 <div class="caption-box">
                                     <h3>
-                                        <a href="{{ route('page.blogs-details', $post->slug) }}">
-                                            {{ \Illuminate\Support\Str::limit($post->title, 60) }}
+                                        <a href="{{ route('page.blogs-details', $post->slug) }}" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" title="{{ $post->title }}">
+                                            {{ $post->title }}
                                         </a>
                                     </h3>
                                     <ul class="info">

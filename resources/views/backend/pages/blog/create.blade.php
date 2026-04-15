@@ -113,6 +113,7 @@
                             <label for="image" class="form-label">Featured Image</label>
                             <input type="file" class="form-control @error('image') is-invalid @enderror"
                                     id="image" name="image" accept="image/*">
+                            <small class="form-text text-muted">Required size: 650x500px</small>
                             <div id="featured-image-preview-wrap" class="mt-2 d-none">
                                 <div class="border rounded-2 p-2 bg-light">
                                     <img id="featured-image-preview" src="" alt="Featured image preview" class="img-fluid rounded" style="max-height: 180px; object-fit: cover; width: 100%;">

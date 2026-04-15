@@ -47,8 +47,6 @@ class BlogController extends Controller
             'published_date' => 'nullable|date|required_if:status,scheduled|required_if:status,published'
         ]);
 
-        $data = $request->all();
-
         // Generate slug from title
         $slug = Str::slug($request->title);
         $originalSlug = $slug;
@@ -58,6 +56,8 @@ class BlogController extends Controller
         while (BlogPost::where('slug', $slug)->exists()) {
             $slug = $originalSlug . '-' . $count++;
         }
+
+        $data = $request->all();
 
         $blogData = [
             'category_id' => $request->category_id,
@@ -76,8 +76,8 @@ class BlogController extends Controller
             $file = $request->file('image');
             $name = $file->getClientOriginalName();
             $size = $file->getSize();
-            $path = ImageHelper::uploadImage($file, 'uploads');
-            
+            $path = ImageHelper::uploadImage($file, 'uploads', null, 650, 500);
+
             Media::create([
                 'model_type' => BlogPost::class,
                 'model_id'   => $blogPost->id,
@@ -140,9 +140,11 @@ class BlogController extends Controller
             'category_id' => 'required|exists:categories,id',
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048|dimensions:width=650,height=500',
             'status' => 'required|in:published,scheduled,draft',
             'published_date' => 'nullable|date|required_if:status,scheduled|required_if:status,published'
+        ], [
+            'image.dimensions' => 'Featured image size must be exactly 650x500 pixels.',
         ]);
 
         $updateData = [
@@ -165,7 +167,7 @@ class BlogController extends Controller
             $file = $request->file('image');
             $name = $file->getClientOriginalName();
             $size = $file->getSize();
-            $path = ImageHelper::uploadImage($file, 'uploads');
+            $path = ImageHelper::uploadImage($file, 'uploads', null, 650, 500);
 
             Media::create([
                 'model_type' => BlogPost::class,
