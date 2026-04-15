@@ -11,14 +11,12 @@
                         <table class="table text-nowrap table-hover">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>Invoice #</th>
                                     <th>Name</th>
                                     <th>Product</th>
-                                    <th>Plan</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>Source</th>
+                                    <th>Price</th>
                                     <th>Status</th>
+                                    <th>Payment</th>
                                     <th>Date</th>
                                     <th>Actions</th>
                                 </tr>
@@ -26,37 +24,45 @@
                             <tbody>
                                 @forelse($sales as $sale)
                                     <tr>
-                                        <td>{{ $loop->iteration + $sales->firstItem() - 1 }}</td>
+                                        <td>{{ $sale->invoice_no ?? '-' }}</td>
                                         <td>{{ $sale->name ?? '-' }}</td>
                                         <td>
                                             <div class="fw-semibold">{{ optional($sale->product)->title ?? '-' }}</div>
-                                            <small class="text-muted">#{{ $sale->product_id ?? '-' }}</small>
+                                            <small class="text-muted">{{ optional($sale->plan)->name ?? '-' }}</small>
                                         </td>
                                         <td>
-                                            <div class="fw-semibold">{{ optional($sale->plan)->name ?? '-' }}</div>
-                                            <small class="text-muted">{{ optional($sale->plan)->price ? 'Price: ' . optional($sale->plan)->price : 'No plan price' }}</small>
+                                            <div class="fw-semibold">{{ number_format($sale->total_price, 2) }}</div>
+                                            @if($sale->discount > 0)
+                                                <small class="text-danger">Disc: {{ number_format($sale->discount, 2) }}</small>
+                                            @endif
                                         </td>
-                                        <td>{{ $sale->phone ?? '-' }}</td>
-                                        <td>{{ $sale->email ?? '-' }}</td>
-                                        <td>{{ $sale->source ?? '-' }}</td>
                                         <td>
                                             <form action="{{ route('sales.update-status', $sale->id) }}" method="POST" class="status-form">
                                                 @csrf
-                                                <select name="status" class="form-control form-control-sm status-change" style="width: 140px;">
+                                                <select name="status" class="form-control form-control-sm status-change" style="width: 120px;">
                                                     @foreach($statuses as $key => $label)
                                                         <option value="{{ $key }}" {{ $sale->status === $key ? 'selected' : '' }}>{{ $label }}</option>
                                                     @endforeach
                                                 </select>
                                             </form>
                                         </td>
-                                        <td>{{ $sale->created_at->format('M d, Y') }}</td>
                                         <td>
-                                            <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-sm btn-info">View</a>
-                                            <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                                            </form>
+                                            <span class="badge {{ $sale->payment_status === 'paid' ? 'bg-success' : ($sale->payment_status === 'unpaid' ? 'bg-danger' : 'bg-warning') }}">
+                                                {{ $paymentStatuses[$sale->payment_status] ?? $sale->payment_status }}
+                                            </span>
+                                            <div class="small text-muted">{{ $sale->payment_method ? ucfirst($sale->payment_method) : '' }}</div>
+                                        </td>
+                                        <td>{{ $sale->sale_date ? \Carbon\Carbon::parse($sale->sale_date)->format('M d, Y') : $sale->created_at->format('M d, Y') }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-sm btn-info-light">View</a>
+                                                <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-sm btn-primary-light">Edit</a>
+                                                <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger-light" onclick="return confirm('Are you sure?')">Delete</button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty

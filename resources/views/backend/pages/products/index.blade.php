@@ -12,6 +12,63 @@
         </div>
     </div>
 
+    @push('css')
+    <style>
+        .module-stat-card {
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            background: #fff;
+            border: 1px solid #eef2f6;
+        }
+        .module-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .module-stat-card--success {
+            border-left: 4px solid #10b981;
+        }
+        .module-stat-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            font-size: 24px;
+        }
+        .module-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 4px;
+            color: #1f2937;
+        }
+        .module-stat-label {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+    </style>
+    @endpush
+
+    <div class="row mb-4">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="module-stat-card module-stat-card--success p-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="module-stat-icon"><i class="ti ti-package"></i></div>
+                    <div class="module-stat-copy">
+                        <div class="module-stat-value">{{ $products->total() }}</div>
+                        <div class="module-stat-label">Active Products</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Additional stat cards can be added here -->
+    </div>
+
     <div class="row">
         <div class="col-xl-12">
             <div class="card custom-card">

@@ -176,6 +176,8 @@ Route::middleware('auth')->group(function () {
     // sales
     Route::get('/sales', [SalesController::class, 'index'])->name('sales.index');
     Route::get('/sales/{id}', [SalesController::class, 'show'])->name('sales.show');
+    Route::get('/sales/{id}/edit', [SalesController::class, 'edit'])->name('sales.edit');
+    Route::put('/sales/{id}', [SalesController::class, 'update'])->name('sales.update');
     Route::post('/sales/{id}/update-status', [SalesController::class, 'updateStatus'])->name('sales.update-status');
     Route::delete('/sales/{id}', [SalesController::class, 'destroy'])->name('sales.destroy');
 

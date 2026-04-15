@@ -23,6 +23,18 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('subject')->nullable();
             $table->longText('message')->nullable();
+            $table->date('sale_date')->nullable();
+            $table->decimal('price', 15, 2)->default(0);
+            $table->date('expaire_date')->nullable();
+            $table->string('invoice_no')->unique()->nullable();
+            $table->string('payment_method')->nullable();
+            $table->string('payment_status')->default('unpaid');
+            $table->integer('quantity')->default(1);
+            $table->decimal('discount', 15, 2)->default(0);
+            $table->decimal('tax', 15, 2)->default(0);
+            $table->decimal('total_price', 15, 2)->default(0);
+            $table->string('transaction_id')->nullable();
+            $table->text('notes')->nullable();
             $table->string('status')->default('new');
             $table->timestamps();
         });
