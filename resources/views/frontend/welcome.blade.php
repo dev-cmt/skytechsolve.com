@@ -261,7 +261,7 @@
                                         <a href="#">{{ $team->name }}</a>
                                     </h3>
                                 </div>
-                                <span class="designation">{{ $team->position ?? 'Team Member' }}</span>
+                                <span class="designation">{{ $team->designation ?? 'Team Member' }}</span>
                             </div>
                         </div>
                     @endforeach

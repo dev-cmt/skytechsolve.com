@@ -1,0 +1,5 @@
+-- ==========================================
+ALTER TABLE teams
+CHANGE position designation VARCHAR(255) NULL,
+CHANGE bio details TEXT NULL;
+-- ==========================================

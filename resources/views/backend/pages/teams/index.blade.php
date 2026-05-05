@@ -44,8 +44,9 @@
                                 <tr>
                                     <th>SL</th>
                                     <th>Image</th>
+                                    <th>Order</th>
                                     <th>Name</th>
-                                    <th>Position</th>
+                                    <th>Designation</th>
                                     <th>Social Links</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -62,8 +63,9 @@
                                             <span class="badge bg-secondary">No Image</span>
                                         @endif
                                     </td>
+                                    <td>{{ $team->order }}</td>
                                     <td>{{ $team->name }}</td>
-                                    <td>{{ $team->position }}</td>
+                                    <td>{{ $team->designation }}</td>
                                     <td>
                                         <div class="d-flex gap-1">
                                             @if($team->facebook)
@@ -98,8 +100,9 @@
                                             <button type="button" class="btn btn-sm btn-warning-light btn-icon edit-team"
                                                 data-id="{{ $team->id }}"
                                                 data-name="{{ $team->name }}"
-                                                data-position="{{ $team->position }}"
-                                                data-bio="{{ $team->bio }}"
+                                                data-designation="{{ $team->designation }}"
+                                                data-details="{{ $team->details }}"
+                                                data-order="{{ $team->order }}"
                                                 data-facebook="{{ $team->facebook }}"
                                                 data-twitter="{{ $team->twitter }}"
                                                 data-instagram="{{ $team->instagram }}"
@@ -155,13 +158,17 @@
                                 <input type="text" class="form-control" name="name" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Position</label>
-                                <input type="text" class="form-control" name="position" required>
+                                <label class="form-label">Designation</label>
+                                <input type="text" class="form-control" name="designation" required>
                             </div>
-                            {{-- <div class="col-md-6">
-                                <label class="form-label">Bio</label>
-                                <input type="text" id="bio" name="bio" class="form-control">
-                            </div> --}}
+                            <div class="col-md-6">
+                                <label class="form-label">Order (Serial)</label>
+                                <input type="number" class="form-control" name="order" value="0">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Details</label>
+                                <textarea name="details" class="form-control" rows="3"></textarea>
+                            </div>
                             <div class="col-md-6">
                                 <label class="form-label">Profile Image</label>
                                 <input type="file" class="form-control" name="image">
@@ -239,13 +246,17 @@
                                 <input type="text" id="edit_name" name="name" class="form-control" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Position</label>
-                                <input type="text" id="edit_position" name="position" class="form-control" required>
+                                <label class="form-label">Designation</label>
+                                <input type="text" id="edit_designation" name="designation" class="form-control" required>
                             </div>
-                            {{-- <div class="col-md-6">
-                                <label class="form-label">Bio</label>
-                                <input type="text" id="edit_bio" name="bio" class="form-control">
-                            </div> --}}
+                            <div class="col-md-6">
+                                <label class="form-label">Order (Serial)</label>
+                                <input type="number" id="edit_order" name="order" class="form-control">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Details</label>
+                                <textarea id="edit_details" name="details" class="form-control" rows="3"></textarea>
+                            </div>
                             <div class="col-md-6">
                                 <label class="form-label">Profile Image</label>
                                 <input type="file" id="edit_image" name="image" class="form-control">
@@ -312,8 +323,9 @@
         $(document).on('click', '.edit-team', function() {
             $('#edit_id').val($(this).data('id'));
             $('#edit_name').val($(this).data('name'));
-            $('#edit_position').val($(this).data('position'));
-            $('#edit_bio').val($(this).data('bio'));
+            $('#edit_designation').val($(this).data('designation'));
+            $('#edit_details').val($(this).data('details'));
+            $('#edit_order').val($(this).data('order'));
             $('#edit_facebook').val($(this).data('facebook'));
             $('#edit_twitter').val($(this).data('twitter'));
             $('#edit_instagram').val($(this).data('instagram'));

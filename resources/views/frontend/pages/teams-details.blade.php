@@ -5,7 +5,7 @@
             <div class="inner-container clearfix">
                 <div class="title-box">
                     <h1>{{ $team->name }}</h1>
-                    <span class="title">{{ $team->position ?? 'Professional Expert' }}</span>
+                    <span class="title">{{ $team->designation ?? 'Professional Expert' }}</span>
                 </div>
                 <ul class="bread-crumb clearfix">
                     <li><a href="{{ url('/') }}">Home</a></li>
@@ -48,11 +48,11 @@
                 <div class="content-column col-lg-8 col-md-12 col-sm-12">
                     <div class="inner-column wow fadeInRight">
                         <h2>{{ $team->name }}</h2>
-                        <span class="designation">{{ $team->position ?? 'Team Member' }}</span>
+                        <span class="designation">{{ $team->designation ?? 'Team Member' }}</span>
                         
                         <div class="text">
-                            @if($team->bio)
-                                {!! nl2br(e($team->bio)) !!}
+                            @if($team->details)
+                                {!! nl2br(e($team->details)) !!}
                             @else
                                 <p>This professional is an integral part of our team, bringing years of expertise to every project. We are dedicated to delivering excellence in every aspect of our work.</p>
                             @endif
